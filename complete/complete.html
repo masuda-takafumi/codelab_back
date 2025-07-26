@@ -1,0 +1,48 @@
+<!--
+  生徒管理システム - ログイン画面
+  目次:
+    1. ヘッダー
+    2.完了メッセージ
+    3.戻るリンク
+    4. フッター
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> - 成績管理システム - 登録完了</title>
+
+  <link rel="stylesheet" href="complete.css">
+</head>
+<body>
+  <!-- ヘッダー -->
+  <header>
+    <div class="logo-area">
+      <img src="生徒管理ロゴ.png" alt="ロゴ" class="logo">
+      <span class="title">生徒管理システム</span>
+      <span class="subtitle">－Score Manager－</span>
+    </div>
+    <button class="logout-button" id="logout-btn" style="display:none;">ログアウト</button>
+    <img src="ログアウト透過.png" alt="ログアウト" class="logout-logo" id="logout-logo" tabindex="0">
+  </header>
+
+  <!-- 完了メッセージ -->
+  <main class="complete-container">
+    <div class="complete-box">
+      <div class="circle-placeholder">✔</div>
+      <h2>登録が完了しました。</h2>
+    </div>
+  </main>
+
+  <!-- 戻るリンク -->
+  <div class="back-to-list-wrapper">
+    <a href="../student_list/student_list.html" class="back-to-list">←生徒一覧に戻る</a>
+  </div>
+
+  <!-- フッター -->
+  <footer>
+    <span class="copyright">Copyright &copy; Vuetech corp . All Right Reserved</span>
+  </footer>
+</body>
+</html>

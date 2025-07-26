@@ -1,0 +1,372 @@
+/**
+====================================
+* 生徒管理システム - 生徒一覧・登録画面
+
+ 目次:
+ 1. 基本スタイル & ヘルパー
+ 2. ヘッダー & フッター
+ 3. メインコンテンツ & タブ
+ 4. 検索ボックス
+ 5. 生徒一覧テーブル & ページネーション
+ 6. 新規生徒登録フォーム
+ 7. 成績一覧テーブル
+====================================
+ */
+
+/* 1. 基本スタイル & ヘルパー */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #f5f5f5;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* 2. ヘッダー & フッター */
+header {
+  background: #ffb74d;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row; /* 左右を通常の並びに戻す */
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  margin-left: 0;
+  margin-right: 30px; /* 右端に余白 */
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  margin-left: 32px;
+}
+
+.title {
+  font-size: 2em;
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+.subtitle {
+  font-size: 1.1em;
+  color: #333;
+}
+
+
+.logout-button {
+  background-color: white;
+  color: orange;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  margin-right: 40px;
+}
+
+.logout-logo {
+  width: 120x;
+  height: 40px;
+  margin-right: 40px;
+}
+
+footer .copyright {
+  color: black;
+  margin-left: auto;
+  padding-right: 1rem;
+}
+
+/* 3. メインコンテンツ & タブ */
+main {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 0 1rem;
+}
+
+.tabs {
+  display: flex;
+}
+
+.tab {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  text-decoration: none;
+  color: inherit;
+}
+
+.tab.active {
+  color: gray;
+  border-top: 3px solid orange;
+}
+
+/* 4. 検索ボックス */
+.search-box {
+  display: flex;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  gap: 1rem;
+  justify-content: center;
+  background-color: #f0f0f0;
+}
+
+.search-box input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 300px;
+}
+
+.search-box button {
+  background-color: orange;
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* 5. 生徒一覧テーブル & ページネーション */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+thead {
+  background-color: #f0f0f0;
+}
+
+th, td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #ccc;
+  text-align: center;
+}
+
+button.action {
+  border: 2px solid black;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button.action:hover {
+  background-color: darkorange;
+}
+
+.pagination {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.pagination button {
+  margin: 0 0.25rem;
+  padding: 0.5rem 0.75rem;
+  background-color: white;
+  border: 1px solid orange;
+  color: orange;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.pagination button:hover,
+.pagination button.active-page {
+  background-color: orange;
+  color: white;
+}
+
+/* 6. 新規生徒登録フォーム */
+fieldset.register-area {
+  border: none; /* 枠線を消す */
+}
+.register-area {
+  display: flex;
+  background: #eee;
+  padding: 2rem 1rem 1rem 1rem;
+  align-items: flex-start;
+}
+
+.photo-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 2rem;
+}
+
+.photo-preview {
+  width: 160px;
+  height: 200px;
+  object-fit: cover;
+  border: 3px solid #333;
+  background: #fff;
+  margin-bottom: 0.5rem;
+}
+
+#photo-btn {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.info-input {
+  flex: 1;
+}
+
+.info-input .row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.info-input label {
+  min-width: 90px;
+  font-size: 1em;
+}
+
+.info-input input, .info-input select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  background: #fff;
+}
+
+#class-select, #gender-select {
+  width: 85px;
+}
+#class-number {
+  width: 115px;
+}
+#birth-year, #birth-month, #birth-day {
+  height: 44px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  background: #fff;
+  margin-right: 4px;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+
+#register-btn {
+  display: inline-block;
+  background: orange;
+  border: none;
+  font-size: 2rem;
+  padding: 0.5rem 2.5rem;
+  border-radius: 10px;
+  margin-left: 20px;
+  margin-top: 0;
+  margin-bottom: 0;
+  cursor: pointer;
+  letter-spacing: 0.5em;
+  text-align: center;
+  width: auto;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* 7. 成績一覧テーブル */
+.score-area {
+  background: #fff;
+  margin-bottom: 2rem;
+  overflow-x: auto; /* テーブルがはみ出さないようにする */
+}
+#score-table {
+  width: 100%; /* 枠内に収める */
+  min-width: 800px; /* 必要に応じて調整 */
+  box-sizing: border-box;
+  border-spacing: 0 8px;
+}
+
+#score-table th, #score-table td {
+  padding: 0.5rem 0.3rem;
+  text-align: center;
+}
+
+#add-score-btn {
+  background: #444;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1.5rem;
+  margin-top: 1rem;
+  margin-left: 15px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: block;
+}
+
+#score-table input[type="number"] {
+  width: 60px;
+}
+
+#score-table input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+}
+
+#score-table select {
+  min-width: 70px;
+}
+
+#score-table input, #score-table select {
+  border-radius: 12px;
+  border: 2px solid #222;
+  padding: 0.2em 0.5em;
+  font-size: 1em;
+  text-align: center;
+}
+
+#score-table td {
+  background: #fff;
+  border-radius: 12px;
+}
+
+#score-table .score-save,
+#score-table .score-delete {
+  border: 2px solid black;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.back-to-list {
+  color: #0288d1;
+  background: none;
+  font-weight: bold;
+  padding: 0;
+  border-radius: 0;
+  margin: 0;
+  text-decoration: none;
+  font-size: 1.1em;
+  box-shadow: none;
+  transition: color 0.2s;
+}
+.back-to-list:hover {
+  text-decoration: underline;
+  color: #01579b;
+}
+
+
+/* フッター */
+footer {
+  background: #ffb74d;
+  text-align: right;
+  padding: 10px 30px;
+  font-size: 0.95em;
+  color: black;
+}

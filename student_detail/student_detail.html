@@ -1,0 +1,128 @@
+<!--
+  生徒管理システム - 生徒詳細画面
+  目次:
+    1. ヘッダー
+    2. メイン（新規生徒登録フォーム・成績一覧）
+    3. 戻るリンク
+    4. フッター
+    5. スクリプト
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>生徒管理システム - 生徒詳細</title>
+  <link rel="stylesheet" href="student_detail.css">
+</head>
+<body>
+  <!-- 1. ヘッダー -->
+  <header>
+    <div class="logo-area">
+      <img src="生徒管理ロゴ.png" alt="ロゴ" class="logo">
+      <span class="title">生徒管理システム</span>
+      <span class="subtitle">－Score Manager－</span>
+    </div>
+    <button class="logout-button" id="logout-btn" style="display:none;">ログアウト</button>
+    <img src="ログアウト透過.png" alt="ログアウト" class="logout-logo" id="logout-logo" tabindex="0">
+  </header>
+  <!-- ヘッダー下の見出し -->
+  <h1 class="student-detail-title">生徒情報詳細</h1>
+
+  <!-- 2. メイン（新規生徒登録フォーム・成績一覧） -->
+  <main>
+    <section id="register-section">
+      <form id="student-register-form" enctype="multipart/form-data">
+        <fieldset class="register-area">
+          <legend class="hidden">新規生徒登録フォーム</legend>
+          <section class="photo-upload">
+            <img id="student-photo" src="../login/user.png" alt="写真" class="photo-preview">
+            <input type="file" id="photo-input" accept="image/*" class="hidden">
+            <button type="button" id="photo-btn">写真を挿入</button>
+          </section>
+          <section class="info-input">
+            <div class="row">
+              <label for="last-name">氏名(姓)</label>
+              <input type="text" id="last-name" placeholder="氏名(姓)" required>
+              <label for="first-name">氏名(名)</label>
+              <input type="text" id="first-name" placeholder="氏名(名)" required>
+            </div>
+            <div class="row">
+              <label for="last-name-kana">氏名(せい)</label>
+              <input type="text" id="last-name-kana" placeholder="氏名(せい)" required pattern="[ぁ-ん]+">
+              <label for="first-name-kana">氏名(めい)</label>
+              <input type="text" id="first-name-kana" placeholder="氏名(めい)" required pattern="[ぁ-ん]+">
+            </div>
+
+
+            <div class="row">
+                <label for="class-select">クラス</label>
+                <select id="class-select" required>
+                <option value="">クラス</option>
+                <option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option>
+                </select>
+                <label for="gender-select">性別</label>
+                <select id="gender-select" required>
+                <option value="">性別</option>
+                <option>男</option><option>女</option>
+                </select>
+            </div>
+            <div class="row">
+              <label for="class-number">クラス番号</label>
+              <select id="class-number" required>
+                <option value="">クラス番号</option>
+              </select>
+            </div>
+            <div class="row">
+                <label for="birth-year">生年月日</label>
+                <select id="birth-year" required></select>
+                <span>年</span>
+                <select id="birth-month" required></select>
+                <span>月</span>
+                <select id="birth-day" required></select>
+                <span>日</span>
+            <button type="submit" id="register-btn">更新</button>
+            </div>
+          </section>
+        </fieldset>
+      </form>
+      <section class="score-area">
+        <h2>成績一覧</h2>
+        <table id="score-table">
+          <thead>
+            <tr>
+              <th>実施日</th>
+              <th>種別</th>
+              <th>国語</th>
+              <th>数学</th>
+              <th>英語</th>
+              <th>理科</th>
+              <th>社会</th>
+              <th>平均</th>
+              <th>合計</th>
+              <th>保存</th>
+              <th>削除</th>
+            </tr>
+          </thead>
+          <tbody id="score-table-body">
+            <!-- JSで行追加 -->
+          </tbody>
+        </table>
+        <button type="button" id="add-score-btn">＋テスト情報を追加する</button>
+      </section>
+      <!-- 3. 戻るリンク -->
+      <div class="back-to-list-wrapper">
+        <a href="../student_list/student_list.html" class="back-to-list">←生徒一覧に戻る</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- 4. フッター -->
+  <footer>
+    <span class="copyright">Copyright &copy; Vuetech corp . All Right Reserved</span>
+  </footer>
+
+  <!-- 5. スクリプト -->
+  <script src="student_detail.js"></script>
+</body>
+</html>
+
