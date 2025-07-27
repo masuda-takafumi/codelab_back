@@ -13,7 +13,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   // 1. DOM要素取得
   const studentTableBody = document.getElementById("student-table-body");
-  const pageButtonsContainer = document.getElementById("page-buttons");
+  const pageButtonsContainer = document.getElementById("pege-btn");
   const searchInput = document.getElementById("search-name");
   const searchBtn = document.getElementById("search-btn");
   const logoutBtn = document.getElementById("logout-btn");

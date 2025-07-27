@@ -69,8 +69,9 @@ header {
   margin-right: 40px;
 }
 
-.logout-logo {
-  width: 120x;
+
+#logout-logo {
+  width: 140px;
   height: 40px;
   margin-right: 40px;
 }
