@@ -297,7 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // イベントリスナーは再描画時にのみ設定する（重複防止）
+    // 重複防止
 
     return trElement; // DocumentFragmentではなく<tr>要素を返す
   }
@@ -459,7 +459,7 @@ document.addEventListener("DOMContentLoaded", function () {
     formData.append('test_type', typeSelect.value);
     formData.append('scores', JSON.stringify(scores));
 
-    // Ajaxリクエストでデータを送信
+    // リクエストでデータを送信
     fetch('student.sousa.php', {
       method: 'POST',
       body: formData
@@ -476,7 +476,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return true;
   }
 
-  // 成績データを削除する関数（Ajax）
+  // 成績データを削除する関数
   function deleteScoreData(tr) {
     if (!tr) {
       console.error('削除対象の要素が見つかりません');
@@ -508,7 +508,7 @@ document.addEventListener("DOMContentLoaded", function () {
           scoreData.splice(index, 1);
           sortAndRedrawScoreTable();
         }
-        // 削除済みテストIDを永続化（復活防止）
+        // 削除
         try {
           const ids = JSON.parse(localStorage.getItem('deletedTestIds') || '[]');
           const numericId = parseInt(testId, 10);
@@ -542,11 +542,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // 日付の新しい順にソート
     scoreData.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    // テーブルを再描画
+    // テーブル
     redrawAllScoreTable();
   }
 
-  // 成績テーブル全体を再描画（既存データも含む）
+  // 成績テーブル全体
   function redrawAllScoreTable() {
     scoreTableBody.innerHTML = '';
 

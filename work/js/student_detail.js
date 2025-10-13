@@ -727,7 +727,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // リアルタイムチェック - 入力したらエラーを消す
+  //入力したらエラーを消す
   function setupInputValidation() {
     const inputFields = document.querySelectorAll('#student-register-form input, #student-register-form select');
     inputFields.forEach(field => {
