@@ -9,7 +9,7 @@ services:
       MYSQL_USER: smuser
       MYSQL_PASSWORD: smpass
     volumes:
-    - db-data:/var/lib/mysql
+    - scoremanager_db-data:/var/lib/mysql
   php:
     build: ./php
     depends_on:
@@ -28,4 +28,5 @@ services:
     ports:
       - 8080:80
 volumes:
-  db-data:
+  scoremanager_db-data:
+    external: true
