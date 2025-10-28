@@ -9,7 +9,7 @@
 5. 成績削除
 */
 
-require_once '/work/app/common-p.php';
+require_once '/work/app/core.php';
 requireAuth();
 
 $action = $_POST['action'] ?? '';
@@ -83,7 +83,6 @@ try {
 
             // 種別コード
             $test_cd = ($test_type === '期末試験') ? 1 : 2;
-
             // テスト作成
             $stmt = $pdo->prepare("INSERT INTO tests (test_date, test_cd) VALUES (?, ?)");
             $stmt->execute([$test_date, $test_cd]);

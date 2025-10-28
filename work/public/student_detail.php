@@ -21,7 +21,7 @@
 <?php
 // 1. PHP処理 - ログイン確認と生徒データの準備
 // 1.1 共通関数読み込み - データベース接続とか使う
-require_once '/work/app/common-p.php';
+require_once '/work/app/core.php';
 
 
 
