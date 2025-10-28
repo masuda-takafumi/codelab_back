@@ -17,7 +17,7 @@ services:
     ports:
     - 8000:8000
     volumes:
-    - ./work:/var/www/html
+    - ./work/public:/var/www/html
     - ./work:/work
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest

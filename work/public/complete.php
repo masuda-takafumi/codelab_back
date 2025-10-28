@@ -1,5 +1,5 @@
 <?php
-require_once 'common-p.php';
+require_once '/work/app/common-p.php';
 
 // 1. PHP処理 - ログイン確認とログアウト処理
 // ログイン確認 - ログインしてないとダメ

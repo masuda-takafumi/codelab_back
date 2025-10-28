@@ -6,7 +6,7 @@
 3. スクリプト読み込み
 -->
 <?php
-require_once 'common-p.php';
+require_once '/work/app/common-p.php';
 
 $error = '';
 

@@ -9,7 +9,7 @@
 5. 成績削除
 */
 
-require_once 'common-p.php';
+require_once '/work/app/common-p.php';
 requireAuth();
 
 $action = $_POST['action'] ?? '';
