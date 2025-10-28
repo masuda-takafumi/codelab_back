@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($user && password_verify($password, $user['password_hash'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['email'] = $user['email'];
-                header("Location: student_list.php");
+                header("Location: /php/student_list.php");
                 exit;
             } else {
                 $error = 'メールアドレスまたはパスワードが正しくありません。';
@@ -69,12 +69,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>生徒管理システム - ログイン</title>
-  <link rel="stylesheet" href="css/login.css">
+  <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
   <header>
     <div class="logo-area">
-      <img src="img/生徒管理ロゴ.png" alt="ロゴ" class="logo">
+      <img src="../img/生徒管理ロゴ.png" alt="ロゴ" class="logo">
       <span class="title">生徒管理システム</span>
       <span class="subtitle">－Score Manager－</span>
     </div>

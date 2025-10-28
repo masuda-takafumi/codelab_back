@@ -57,14 +57,14 @@ function requireAuth() {
     }
 
     if (!isset($_SESSION['user_id'])) {
-        redirectTo('login.php');
+        redirectTo('/php/login.php');
     }
 }
 
 // 3. ログアウト処理
 function logout() {
     session_destroy();
-    header('Location: login.php');
+    header('Location: /php/login.php');
     exit;
 }
 
@@ -132,12 +132,12 @@ function generateFooter() {
 function generateHeader($title = '生徒管理システム', $subtitle = '－Score Manager－') {
     return '
     <div class="logo-area">
-      <img src="img/生徒管理ロゴ.png" alt="ロゴ" class="logo">
+      <img src="../img/生徒管理ロゴ.png" alt="ロゴ" class="logo">
       <span class="title">' . h($title) . '</span>
       <span class="subtitle">' . h($subtitle) . '</span>
     </div>
     <button class="logout-button" id="logout-btn" style="display:none;">ログアウト</button>
-    <img src="img/ログアウト透過.png" alt="ログアウト" class="logout-logo" id="logout-logo" tabindex="0">';
+    <img src="../img/ログアウト透過.png" alt="ログアウト" class="logout-logo" id="logout-logo" tabindex="0">';
 }
 
 // ログアウトフォーム

@@ -58,7 +58,7 @@ try {
 <head>
   <meta charset="UTF-8">
   <title>生徒管理システム - 生徒一覧</title>
-  <link rel="stylesheet" href="css/student_list.css">
+  <link rel="stylesheet" href="../css/student_list.css">
 </head>
 <body>
   <!-- 2.1 ヘッダー - ロゴとタイトル -->
@@ -102,7 +102,7 @@ try {
               <td><?php echo htmlspecialchars($student['birth_date']); ?></td>
               <td><?php echo htmlspecialchars($student['last_name'] . ' ' . $student['first_name']); ?></td>
               <td><?php echo htmlspecialchars($student['last_name_kana'] . ' ' . $student['first_name_kana']); ?></td>
-              <td><a href="student_detail.php?id=<?php echo $student['id']; ?>" class="detail-link">詳細</a></td>
+              <td><a href="/php/student_detail.php?id=<?php echo $student['id']; ?>" class="detail-link">詳細</a></td>
               <td><button type="button" class="delete-btn" data-student-id="<?php echo $student['id']; ?>">削除</button></td>
             </tr>
           <?php endforeach; ?>
@@ -139,7 +139,7 @@ try {
             <input type="hidden" name="action" value="register_student">
           <!-- 2.7 写真アップロード - 生徒の写真を設定 -->
           <section class="photo-upload">
-            <img id="student-photo" src="img/ダミー生徒画像.png" alt="写真" class="photo-preview">
+            <img id="student-photo" src="../img/ダミー生徒画像.png" alt="写真" class="photo-preview">
             <input type="file" id="photo-input" accept="image/jpeg,image/jpg" class="hidden">
             <button type="button" id="photo-btn">写真を挿入</button>
             <div id="photo-error" class="photo-error hidden"></div>
@@ -224,7 +224,7 @@ try {
       </section>
       <!-- 3. 戻るリンク -->
       <div class="back-list-wrapper">
-        <a href="student_list.php" class="back-list">←生徒一覧に戻る</a>
+        <a href="/php/student_list.php" class="back-list">←生徒一覧に戻る</a>
       </div>
 
       <!-- 2.11 隠しフォーム - 成績の保存と削除用 -->
@@ -278,7 +278,7 @@ try {
   <script>
     window.studentsData = <?php echo json_encode($students); ?>;
   </script>
-  <script src="js/student_list.js?v=<?php echo time(); ?>"></script>
+  <script src="../js/student_list.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>
 

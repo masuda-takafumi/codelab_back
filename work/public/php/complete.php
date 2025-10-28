@@ -27,7 +27,7 @@ checkLogoutRequest();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title> - 成績管理システム - 登録完了</title>
   <!-- CSS読み込み - 画面の見た目を整える -->
-  <link rel="stylesheet" href="css/complete.css">
+  <link rel="stylesheet" href="../css/complete.css">
 </head>
 <body>
   <!-- ヘッダー - ロゴとタイトル -->
@@ -45,7 +45,7 @@ checkLogoutRequest();
 
   <!-- 戻るリンク - 一覧に戻るボタン -->
   <div class="back-list-wrapper">
-    <a href="student_list.php" class="back-list">←生徒一覧に戻る</a>
+    <a href="/php/student_list.php" class="back-list">←生徒一覧に戻る</a>
   </div>
 
   <!-- フッター - コピーライト -->
@@ -61,6 +61,6 @@ checkLogoutRequest();
 
   <!-- 3. スクリプト読み込み - ログアウト機能 -->
   <!-- JavaScript読み込み - ログアウトボタンを動かす -->
-  <script src="js/complete.js"></script>
+  <script src="../js/complete.js"></script>
 </body>
 </html>

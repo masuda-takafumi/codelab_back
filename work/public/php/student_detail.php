@@ -122,7 +122,7 @@ if ($student_id) {
 <head>
   <meta charset="UTF-8">
   <title>生徒管理システム - 生徒詳細</title>
-  <link rel="stylesheet" href="css/student_detail.css">
+  <link rel="stylesheet" href="../css/student_detail.css">
 </head>
 <body>
 
@@ -144,7 +144,7 @@ if ($student_id) {
           <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
           <!-- 2.3 写真アップロード - 生徒の写真を設定 -->
           <section class="photo-upload">
-            <img id="student-photo" src="img/ダミー生徒画像.png" alt="写真" class="photo-preview">
+            <img id="student-photo" src="../img/ダミー生徒画像.png" alt="写真" class="photo-preview">
             <input type="file" id="photo-input" accept="image/jpeg,image/jpg" class="hidden">
             <button type="button" id="photo-btn">写真を挿入</button>
             <div id="photo-error" class="photo-error hidden"></div>
@@ -283,7 +283,7 @@ if ($student_id) {
         <button type="button" id="add-score-btn">＋テスト情報を追加する</button>
       </section>
       <div class="back-list-wrapper">
-        <a href="student_list.php" class="back-list">←生徒一覧に戻る</a>
+        <a href="/php/student_list.php" class="back-list">←生徒一覧に戻る</a>
       </div>
 
       <!-- 2.7 成績の保存と削除用 -->
@@ -315,7 +315,7 @@ if ($student_id) {
     // 既存の成績データをJavaScriptで使用できるようにする
     window.existingScores = <?php echo json_encode($existing_scores); ?>;
   </script>
-  <script src="js/student_detail.js"></script>
+  <script src="../js/student_detail.js"></script>
 </body>
 </html>
 
