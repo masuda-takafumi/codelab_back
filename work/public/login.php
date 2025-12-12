@@ -66,4 +66,3 @@ $user->processPost();
   </footer>
 </body>
 </html>
-

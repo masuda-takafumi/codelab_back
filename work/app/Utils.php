@@ -88,4 +88,3 @@ class Utils
         return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
     }
 }
-

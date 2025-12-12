@@ -149,4 +149,3 @@ function generateLogoutForm() {
     </form>';
 }
 ?>
-

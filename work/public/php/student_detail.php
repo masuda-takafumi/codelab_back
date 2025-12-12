@@ -320,4 +320,3 @@ if ($student_id) {
   <script src="../js/student_detail.js"></script>
 </body>
 </html>
-

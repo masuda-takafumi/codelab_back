@@ -282,4 +282,3 @@ try {
   <script src="../js/student_list.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>
-
