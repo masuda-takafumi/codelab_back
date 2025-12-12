@@ -15,7 +15,7 @@ services:
     depends_on:
     - db
     ports:
-    - 8000:8000
+    - 80:8000
     volumes:
     - ./work/public:/var/www/html
     - ./work:/work

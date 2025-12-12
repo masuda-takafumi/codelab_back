@@ -24,13 +24,14 @@
 <?php
 // 1. PHP処理 - ログイン確認と生徒データの準備
 // 1.1 共通関数読み込み - データベース接続とか使う
+require_once '/work/app/config.php';
 require_once '/work/app/core.php';
 
-
-
-
 // 1.2 ログイン確認 - ログインしてないといけない
-requireAuth();
+if (!Utils::isLoggedIn()) {
+    header('Location: /login.php');
+    exit;
+}
 
 
 

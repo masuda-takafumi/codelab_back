@@ -2,15 +2,29 @@
 /*
 生徒操作処理
 
-1. 生徒登録
-2. 生徒更新
-3. 生徒削除
-4. 成績保存
-5. 成績削除
+1. PHP処理
+   1.1 共通ファイル読み込み
+   1.2 ログイン確認
+   1.3 アクション取得
+   1.4 データベース接続
+2. 処理分岐
+   2.1 生徒登録（register_student）
+   2.2 生徒更新（update_student）
+   2.3 生徒削除（delete_student）
+   2.4 成績保存（save_score）
+   2.5 成績削除（delete_score）
 */
 
+// 1. PHP処理
+// 1.1 共通ファイル読み込み
+require_once '/work/app/config.php';
 require_once '/work/app/core.php';
-requireAuth();
+
+// 1.2 ログイン確認
+if (!Utils::isLoggedIn()) {
+    header('Location: /login.php');
+    exit;
+}
 
 $action = $_POST['action'] ?? '';
 

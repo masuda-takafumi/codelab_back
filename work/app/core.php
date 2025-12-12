@@ -61,6 +61,7 @@ function requireAuth() {
     }
 }
 
+
 // 3. ログアウト処理
 function logout() {
     session_destroy();
