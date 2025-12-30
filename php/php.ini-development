@@ -902,7 +902,7 @@ default_socket_timeout = 60
 ;   extension folders as well as the separate PECL DLL download (PHP 5+).
 ;   Be sure to appropriately set the extension_dir directive.
 ;
-extension=exif
+;extension=exif
 ;extension=bz2
 ;extension=curl
 ;extension=fileinfo

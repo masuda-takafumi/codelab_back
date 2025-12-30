@@ -221,7 +221,6 @@ try {
             <!-- JSで行追加 -->
           </tbody>
         </table>
-        <button type="button" id="add-score-btn">＋テスト情報を追加する</button>
       </section>
       <!-- 3. 戻るリンク -->
       <div class="back-list-wrapper">

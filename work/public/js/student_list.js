@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const tabContentList = document.getElementById("tab-content-list");
   const tabContentRegister = document.getElementById("tab-content-register");
   const scoreTableBody = document.getElementById('score-table-body');
-  const addScoreBtn = document.getElementById('add-score-btn');
   const photoBtn = document.getElementById("photo-btn");
   const photoInput = document.getElementById("photo-input");
   const studentPhoto = document.getElementById("student-photo");
@@ -129,7 +128,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   function getCircledNumber(n) {
     const circled = "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳";
-    return circled[n - 1] || String(n);
+    // 20ページ以降は通常の数字を表示
+    if (n <= 20) {
+      return circled[n - 1] || String(n);
+    }
+    return String(n);
   }
 
   // PHPから生徒データ読込
@@ -709,28 +712,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // 検索
   searchBtn.addEventListener('click', searchStudents);
   searchInput.addEventListener('input', searchStudents);
-  // 成績追加ボタン
-  addScoreBtn.addEventListener('click', () => {
-    const newRow = createScoreRow();
-    if (newRow) {
-      scoreTableBody.appendChild(newRow);
-
-      // 新しい行にイベントリスナーを設定
-      attachEventListenersToNewRow(newRow);
-
-      // 成績データに追加
-      const rowId = newRow.getAttribute('data-row-id');
-      scoreData.push({
-        rowId: rowId,
-        date: '',
-        type: '未受験',
-        scores: ['', '', '', '', ''],
-        isSaved: false
-      });
-    } else {
-      console.error('新しい成績行の作成に失敗しました');
-    }
-  });
 
   // 登録処理
   function submitForm(e) {
@@ -771,7 +752,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    window.location.href = 'complete.php';
+    // フォームを実際に送信（データベースに保存される）
+    studentForm.submit();
   }
 
   studentForm.addEventListener('submit', submitForm);
@@ -841,6 +823,22 @@ document.addEventListener("DOMContentLoaded", function () {
   function init() {
     // PHPから生徒データを取得
     loadStudentsFromPHP();
+
+    // URLパラメータからページ番号を取得
+    const urlParams = new URLSearchParams(window.location.search);
+    const pageParam = urlParams.get('page');
+    if (pageParam) {
+      const pageNum = parseInt(pageParam, 10);
+      if (pageNum > 0 && pageNum <= totalPages()) {
+        currentPage = pageNum;
+      }
+    } else {
+      // ページパラメータがない場合、最後のページに移動（新規登録後の場合）
+      const isNewRegistration = urlParams.get('new') === '1';
+      if (isNewRegistration && totalPages() > 0) {
+        currentPage = totalPages();
+      }
+    }
 
     renderTable(currentPage);
     renderPageButtons();

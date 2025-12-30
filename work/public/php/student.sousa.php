@@ -11,8 +11,8 @@
    2.1 生徒登録（register_student）
    2.2 生徒更新（update_student）
    2.3 生徒削除（delete_student）
-   2.4 成績保存（save_score）
-   2.5 成績削除（delete_score）
+   2.4 成績保存（save_score：既存テストの更新のみ）
+   2.5 成績削除（delete_score：物理削除、scoresのみ削除）
 */
 
 // 1. PHP処理
@@ -89,20 +89,24 @@ try {
             exit;
 
         case 'save_score':
-            // 4. 成績保存
+            // 4. 成績保存（既存テストの更新のみ）
             $student_id = $_POST['student_id'] ?? '';
+            $test_id = $_POST['test_id'] ?? '';
             $test_date = $_POST['test_date'] ?? '';
             $test_type = $_POST['test_type'] ?? '';
             $scores = json_decode($_POST['scores'] ?? '[]', true);
 
-            // 種別コード
-            $test_cd = ($test_type === '期末試験') ? 1 : 2;
-            // テスト作成
-            $stmt = $pdo->prepare("INSERT INTO tests (test_date, test_cd) VALUES (?, ?)");
-            $stmt->execute([$test_date, $test_cd]);
-            $test_id = $pdo->lastInsertId();
+            // test_idが必須（既存のテストのみ更新可能）
+            if (!$test_id) {
+                header("Location: student_detail.php?id=" . $student_id . "&error=test_id_required");
+                exit;
+            }
 
-            // 各科目の点数
+            // 既存のテストの成績を削除
+            $stmt = $pdo->prepare("DELETE FROM scores WHERE student_id = ? AND test_id = ?");
+            $stmt->execute([$student_id, $test_id]);
+
+            // 各科目の点数を保存（0点も含む）
             $subjects = [
                 'english' => 1,
                 'math' => 2,
@@ -111,9 +115,10 @@ try {
                 'social' => 5
             ];
             foreach ($scores as $subject => $score) {
-                if (isset($subjects[$subject]) && $score !== '') {
+                if (isset($subjects[$subject])) {
+                    $score_value = ($score !== '' && $score !== null) ? $score : '0';
                     $stmt = $pdo->prepare("INSERT INTO scores (student_id, test_id, subject_id, score) VALUES (?, ?, ?, ?)");
-                    $stmt->execute([$student_id, $test_id, $subjects[$subject], $score]);
+                    $stmt->execute([$student_id, $test_id, $subjects[$subject], $score_value]);
                 }
             }
 
@@ -121,17 +126,13 @@ try {
             exit;
 
         case 'delete_score':
-            // 5. 成績削除
+            // 5. 成績削除（物理削除：scoresのみ削除、testsは削除しない）
             $student_id = $_POST['student_id'] ?? '';
             $test_id = $_POST['test_id'] ?? '';
 
-            // 成績データ
+            // 成績データのみ物理削除（testsは全生徒共通なので削除しない）
             $stmt = $pdo->prepare("DELETE FROM scores WHERE student_id = ? AND test_id = ?");
             $stmt->execute([$student_id, $test_id]);
-
-            // テストそのものも削除
-            $stmt = $pdo->prepare("DELETE FROM tests WHERE id = ?");
-            $stmt->execute([$test_id]);
 
             header("Location: student_detail.php?id=" . $student_id);
             exit;

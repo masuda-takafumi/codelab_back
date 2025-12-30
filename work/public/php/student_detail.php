@@ -6,7 +6,7 @@
    1.2 ログイン確認
    1.3 ログアウト処理
    1.4 生徒情報取得
-   1.5 既存成績データ取得
+   1.5 成績データ取得（全テストを表示、未受験は0点）
 2. HTML構造
    2.1 ヘッダー
    2.2 生徒情報編集フォーム
@@ -14,7 +14,7 @@
    2.4 基本情報入力
    2.5 成績一覧テーブル
    2.6 成績行テンプレート
-   2.7 隠しフォーム
+   2.7 成績保存・削除用フォーム
    2.8 フッター
 3. スクリプト読み込み
 -->
@@ -96,20 +96,20 @@ if ($student_id) {
                         WHEN t.test_cd = 1 THEN '期末試験'
                         WHEN t.test_cd = 2 THEN '中間試験'
                     END as test_type,
-                    MAX(CASE WHEN s.id = 3 THEN sc.score END) as japanese,
-                    MAX(CASE WHEN s.id = 2 THEN sc.score END) as math,
-                    MAX(CASE WHEN s.id = 1 THEN sc.score END) as english,
-                    MAX(CASE WHEN s.id = 4 THEN sc.score END) as science,
-                    MAX(CASE WHEN s.id = 5 THEN sc.score END) as social
+                    COALESCE(MAX(CASE WHEN s.id = 3 AND sc.student_id = ? THEN sc.score END), 0) as japanese,
+                    COALESCE(MAX(CASE WHEN s.id = 2 AND sc.student_id = ? THEN sc.score END), 0) as math,
+                    COALESCE(MAX(CASE WHEN s.id = 1 AND sc.student_id = ? THEN sc.score END), 0) as english,
+                    COALESCE(MAX(CASE WHEN s.id = 4 AND sc.student_id = ? THEN sc.score END), 0) as science,
+                    COALESCE(MAX(CASE WHEN s.id = 5 AND sc.student_id = ? THEN sc.score END), 0) as social
                 FROM tests t
-                LEFT JOIN scores sc ON t.id = sc.test_id
+                LEFT JOIN scores sc ON t.id = sc.test_id AND sc.student_id = ?
                 LEFT JOIN subjects s ON sc.subject_id = s.id
-                WHERE sc.student_id = ? AND t.test_cd IN (1, 2)
+                WHERE t.test_cd IN (1, 2)
                 GROUP BY t.id, t.test_date, t.test_cd
                 ORDER BY t.test_date DESC";
 
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$student_id]);
+        $stmt->execute([$student_id, $student_id, $student_id, $student_id, $student_id, $student_id]);
         $existing_scores = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     } catch (Exception $e) {
@@ -253,7 +253,7 @@ if ($student_id) {
           <tbody id="score-table-body">
             <!-- 既存の成績データを表示 -->
             <?php foreach ($existing_scores as $score): ?>
-            <tr data-existing="true">
+            <tr data-existing="true" data-test-id="<?php echo htmlspecialchars($score['test_id']); ?>">
               <td><input type="date" class="score-date" value="<?php echo htmlspecialchars($score['test_date']); ?>" style="width:120px;" disabled></td>
               <td>
                 <select class="score-type" disabled>
@@ -262,17 +262,17 @@ if ($student_id) {
                   <option value="中間試験" <?php echo $score['test_type'] === '中間試験' ? 'selected' : ''; ?>>中間試験</option>
                 </select>
               </td>
-              <td><input type="number" class="score-input" value="<?php echo htmlspecialchars($score['japanese'] ?? ''); ?>" min="0" max="100" style="width:60px;"></td>
-              <td><input type="number" class="score-input" value="<?php echo htmlspecialchars($score['math'] ?? ''); ?>" min="0" max="100" style="width:60px;"></td>
-              <td><input type="number" class="score-input" value="<?php echo htmlspecialchars($score['english'] ?? ''); ?>" min="0" max="100" style="width:60px;"></td>
-              <td><input type="number" class="score-input" value="<?php echo htmlspecialchars($score['science'] ?? ''); ?>" min="0" max="100" style="width:60px;"></td>
-              <td><input type="number" class="score-input" value="<?php echo htmlspecialchars($score['social'] ?? ''); ?>" min="0" max="100" style="width:60px;"></td>
+              <td><input type="number" class="score-input" value="<?php echo htmlspecialchars($score['japanese'] ?? '0'); ?>" min="0" max="100" style="width:60px;"></td>
+              <td><input type="number" class="score-input" value="<?php echo htmlspecialchars($score['math'] ?? '0'); ?>" min="0" max="100" style="width:60px;"></td>
+              <td><input type="number" class="score-input" value="<?php echo htmlspecialchars($score['english'] ?? '0'); ?>" min="0" max="100" style="width:60px;"></td>
+              <td><input type="number" class="score-input" value="<?php echo htmlspecialchars($score['science'] ?? '0'); ?>" min="0" max="100" style="width:60px;"></td>
+              <td><input type="number" class="score-input" value="<?php echo htmlspecialchars($score['social'] ?? '0'); ?>" min="0" max="100" style="width:60px;"></td>
               <td><input type="text" class="score-avg" readonly style="width:60px;" value="<?php 
-                $scores = array_filter([$score['japanese'], $score['math'], $score['english'], $score['science'], $score['social']]);
-                echo count($scores) > 0 ? number_format(array_sum($scores) / count($scores), 1) : '';
+                $scores = array_filter([$score['japanese'] ?? 0, $score['math'] ?? 0, $score['english'] ?? 0, $score['science'] ?? 0, $score['social'] ?? 0], function($v) { return $v !== null && $v !== ''; });
+                echo count($scores) > 0 ? number_format(array_sum($scores) / count($scores), 1) : '0.0';
               ?>"></td>
               <td><input type="text" class="score-sum" readonly style="width:60px;" value="<?php 
-                $scores = array_filter([$score['japanese'], $score['math'], $score['english'], $score['science'], $score['social']]);
+                $scores = array_filter([$score['japanese'] ?? 0, $score['math'] ?? 0, $score['english'] ?? 0, $score['science'] ?? 0, $score['social'] ?? 0], function($v) { return $v !== null && $v !== ''; });
                 echo array_sum($scores);
               ?>"></td>
               <td><button type="button" class="score-save action">保存</button></td>
@@ -282,7 +282,6 @@ if ($student_id) {
             <!-- JSで行追加 -->
           </tbody>
         </table>
-        <button type="button" id="add-score-btn">＋テスト情報を追加する</button>
       </section>
       <div class="back-list-wrapper">
         <a href="/php/student_list.php" class="back-list">←生徒一覧に戻る</a>

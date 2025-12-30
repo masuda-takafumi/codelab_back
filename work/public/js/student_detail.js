@@ -2,14 +2,17 @@
 生徒詳細画面の機能
 
 1. 要素取得
-2. プルダウンメニュー作成
+2. データ管理
 3. 成績行作成・管理
 4. 点数計算
 5. 入力チェック
 6. データ保存
-7. 写真アップロード
-8. フォーム処理
-9. 初期化
+7. データ削除（物理削除）
+8. 成績テーブル再描画
+9. イベントリスナー設定
+10. 写真アップロード
+11. フォーム処理
+12. 初期化
 */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -20,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // 1. 要素取得
   const logoutBtn = document.getElementById("logout-btn");
   const scoreTableBody = document.getElementById('score-table-body');
-  const addScoreBtn = document.getElementById('add-score-btn');
   const photoBtn = document.getElementById('photo-btn');
   const photoInput = document.getElementById('photo-input');
   const studentPhoto = document.getElementById('student-photo');
@@ -40,9 +42,10 @@ document.addEventListener("DOMContentLoaded", function () {
   existingScores.forEach(score => {  /* 既存の成績データを1件ずつ取り出して処理する */
     scoreData.push({
       rowId: 'existing_' + score.test_id,
+      testId: score.test_id,
       date: score.test_date,
       type: score.test_type,
-      scores: [score.english || '', score.math || '', score.japanese || '', score.science || '', score.social || ''],
+      scores: [score.english ?? '0', score.math ?? '0', score.japanese ?? '0', score.science ?? '0', score.social ?? '0'],
       isSaved: true,
       isExisting: true
     });
@@ -220,12 +223,19 @@ document.addEventListener("DOMContentLoaded", function () {
   // 6. データ保存
   function saveScoreData(tr) {
     const rowId = tr.getAttribute('data-row-id');
+    const testId = tr.getAttribute('data-test-id');
     const dateInput = tr.querySelector('.score-date');
     const typeSelect = tr.querySelector('.score-type');
     const scoreInputs = tr.querySelectorAll('.score-input');
 
     const urlParams = new URLSearchParams(window.location.search);
     const studentId = urlParams.get('id');
+
+    // test_idが必須（既存のテストのみ更新可能）
+    if (!testId) {
+      alert('既存のテストのみ更新できます。');
+      return false;
+    }
 
     // 現在の生徒情報を取得
     const currentStudentData = {
@@ -253,6 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const formData = new FormData();
     formData.append('action', 'save_score');
     formData.append('student_id', studentId);
+    formData.append('test_id', testId);
     formData.append('test_date', dateInput.value);
     formData.append('test_type', typeSelect.value);
     formData.append('scores', JSON.stringify(scores));
@@ -279,51 +290,28 @@ document.addEventListener("DOMContentLoaded", function () {
     return true;
   }
 
-  // 7. データ削除（0点設定）
+  // 7. データ削除（物理削除）
   function deleteScoreData(tr) {
     const rowId = tr.getAttribute('data-row-id');
     const isExisting = tr.getAttribute('data-existing') === 'true';
 
     if (isExisting) {
-      // 既存データの場合はサーバーに0点設定リクエストを送信
+      // 既存データの場合はサーバーに物理削除リクエストを送信
       const urlParams = new URLSearchParams(window.location.search);
       const studentId = urlParams.get('id');
       // test_id を取得
       const testId = rowId.replace('existing_', '');
 
-      // 現在の生徒情報を取得
-      const currentStudentData = {
-        class: document.getElementById('class-select').value,
-        class_no: document.getElementById('class-number').value,
-        last_name: document.getElementById('last-name').value,
-        first_name: document.getElementById('first-name').value,
-        last_name_kana: document.getElementById('last-name-kana').value,
-        first_name_kana: document.getElementById('first-name-kana').value,
-        gender: document.getElementById('gender-select').value,
-        birth_year: document.getElementById('birth-year').value,
-        birth_month: document.getElementById('birth-month').value,
-        birth_day: document.getElementById('birth-day').value
-      };
-
-      const scores = {
-        'english': '0',
-        'math': '0',
-        'japanese': '0',
-        'science': '0',
-        'social': '0'
-      };
+      // 削除前にテスト情報を取得（削除後も0点で表示するため）
+      const dateInput = tr.querySelector('.score-date');
+      const typeSelect = tr.querySelector('.score-type');
+      const testDate = dateInput ? dateInput.value : '';
+      const testType = typeSelect ? typeSelect.value : '';
 
       const formData = new FormData();
-      formData.append('action', 'save_score');
+      formData.append('action', 'delete_score');
       formData.append('student_id', studentId);
-      formData.append('test_date', tr.querySelector('.score-date').value);
-      formData.append('test_type', tr.querySelector('.score-type').value);
-      formData.append('scores', JSON.stringify(scores));
-
-      // 現在の生徒情報を追加
-      Object.keys(currentStudentData).forEach(key => {
-        formData.append(key, currentStudentData[key]);
-      });
+      formData.append('test_id', testId);
 
       fetch('student.sousa.php', {
         method: 'POST',
@@ -331,14 +319,9 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then(response => response.text())
       .then(data => {
-        // ローカルでで0点で更新
-        const index = scoreData.findIndex(item => item.rowId === rowId);
-        if (index !== -1) {
-          scoreData[index].scores = ['0', '0', '0', '0', '0'];
-          scoreData[index].isSaved = true;
-          sortAndRedrawScoreTable();
-        }
-        alert('成績を削除しました。全科目0点で保存されました。');
+        // 削除後、ページをリロードしてデータベースの状態を反映（0点表示になる）
+        alert('成績を削除しました。全科目0点で表示されます。');
+        window.location.reload();
       })
       .catch(error => {
         console.error('削除エラー:', error);
@@ -379,6 +362,9 @@ document.addEventListener("DOMContentLoaded", function () {
       // 既存データの場合はマークを付ける
       if (item.isExisting) {
         tr.setAttribute('data-existing', 'true');
+        if (item.testId) {
+          tr.setAttribute('data-test-id', item.testId);
+        }
       }
 
       const dateInput = tr.querySelector('.score-date');
@@ -409,6 +395,9 @@ document.addEventListener("DOMContentLoaded", function () {
         attachEventListenersToNewRow(tr);
       }
     });
+    
+    // 既存行（削除されたテストも含む）にイベントリスナーを設定
+    attachEventListenersToExistingRows();
   }
 
   // 成績テーブルを再描画（新規追加分のみ）
@@ -563,12 +552,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ログアウトボタンの処理
   logoutBtn.addEventListener('click', () => { window.location.href = 'logout.php'; });
-  // 成績追加ボタンの処理
-  addScoreBtn.addEventListener('click', () => {
-    const tr = createScoreRow();
-    scoreTableBody.appendChild(tr);
-    attachEventListenersToNewRow(tr);
-  });
 
   // 既存の行にイベントリスナーを設定
   attachEventListenersToExistingRows();
@@ -748,25 +731,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // 10. 初期化
   function init() {
     setupInputValidation();     // リアルタイムバリデーションを設定
-
-    const existingRows = scoreTableBody.querySelectorAll('tr[data-existing="true"]');
-
-    // 初期行作成
-    if (existingRows.length === 0) {
-      for (let i = 0; i < 3; i++) {
-        const tr = createScoreRow(); // 新しい行を作成
-        scoreTableBody.appendChild(tr); // テーブルに追加
-
-        const rowId = tr.getAttribute('data-row-id');
-        scoreData.push({
-          rowId: rowId,
-          date: '',
-          type: '未受験',
-          scores: ['', '', '', '', ''],
-          isSaved: false
-        });
-      }
-    }
   }
   init();
 });

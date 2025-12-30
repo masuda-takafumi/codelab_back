@@ -57,7 +57,7 @@ checkLogoutRequest();
 
   <!-- 戻るリンク - 一覧に戻るボタン -->
   <div class="back-list-wrapper">
-    <a href="/php/student_list.php" class="back-list">←生徒一覧に戻る</a>
+    <a href="/php/student_list.php?new=1" class="back-list">←生徒一覧に戻る</a>
   </div>
 
   <!-- フッター - コピーライト -->
