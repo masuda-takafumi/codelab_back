@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿<?php
 /*
  * 役割：共通関数（DB/認証/UI）
@@ -14,6 +15,24 @@
 session_start();
 
 // DB接続
+=======
+<?php
+/*
+共通処理ファイル
+
+1. データベース接続
+2. セッション管理
+3. ログアウト処理
+4. リダイレクト処理
+5. ユーティリティ
+6. UI生成
+*/
+
+session_start();
+
+// 1. データベース接続
+
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 function getDatabaseConnection() {
     static $pdo = null;
 
@@ -45,13 +64,23 @@ function getDatabaseConnection() {
     return $pdo;
 }
 
+<<<<<<< HEAD
 // 認証/セッション
+=======
+
+
+
+
+
+// 2. セッション管理
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 function requireAuth() {
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
 
     if (!isset($_SESSION['user_id'])) {
+<<<<<<< HEAD
         redirectTo('/login.php');
     }
 }
@@ -60,6 +89,17 @@ function requireAuth() {
 function logout() {
     session_destroy();
     header('Location: /login.php');
+=======
+        redirectTo('/php/login.php');
+    }
+}
+
+
+// 3. ログアウト処理
+function logout() {
+    session_destroy();
+    header('Location: /php/login.php');
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
     exit;
 }
 
@@ -69,18 +109,30 @@ function checkLogoutRequest() {
     }
 }
 
+<<<<<<< HEAD
 // リダイレクト
+=======
+// 4. リダイレクト処理
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 function redirectTo($url) {
     header("Location: $url");
     exit;
 }
 
+<<<<<<< HEAD
 // 文字列エスケープ
+=======
+// 5. ユーティリティ
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 function h($string) {
     return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
 }
 
+<<<<<<< HEAD
 // UI生成
+=======
+// 6. UI生成
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 function generateSelectOptions($start, $end, $selected = '', $placeholder = '') {
     $html = '';
     if ($placeholder) {
@@ -93,6 +145,10 @@ function generateSelectOptions($start, $end, $selected = '', $placeholder = '') 
     return $html;
 }
 
+<<<<<<< HEAD
+=======
+// クラス選択肢作成
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 function generateClassOptions($selected = '') {
     $classes = ['A', 'B', 'C', 'D', 'E', 'F'];
     $html = '<option value="">クラス</option>';
@@ -103,6 +159,10 @@ function generateClassOptions($selected = '') {
     return $html;
 }
 
+<<<<<<< HEAD
+=======
+// 性別選択肢作成
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 function generateGenderOptions($selected = '') {
     $genders = [
         '1' => '男',
@@ -116,10 +176,18 @@ function generateGenderOptions($selected = '') {
     return $html;
 }
 
+<<<<<<< HEAD
+=======
+// フッターHTML
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 function generateFooter() {
     return '<span class="copyright">Copyright &copy; Vuetech corp . All Right Reserved</span>';
 }
 
+<<<<<<< HEAD
+=======
+// ヘッダーHTML
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 function generateHeader($title = '生徒管理システム', $subtitle = '－Score Manager－') {
     return '
     <div class="logo-area">
@@ -131,12 +199,17 @@ function generateHeader($title = '生徒管理システム', $subtitle = '－Sco
     <img src="../img/ログアウト透過.png" alt="ログアウト" class="logout-logo" id="logout-logo" tabindex="0">';
 }
 
+<<<<<<< HEAD
+=======
+// ログアウトフォーム
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 function generateLogoutForm() {
     return '
     <form id="logout-form" method="POST" style="display:none;">
       <input type="hidden" name="logout" value="1">
     </form>';
 }
+<<<<<<< HEAD
 
 // URL生成
 function buildUrl($path, $params = []) {
@@ -210,3 +283,6 @@ function buildPaginationButtons($current_page, $total_pages) {
 ?>
 
 
+=======
+?>
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a

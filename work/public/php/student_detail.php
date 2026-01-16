@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿<?php
 /*
  * 役割：生徒詳細の表示・成績一覧・編集フォーム
@@ -16,14 +17,55 @@
 require_once '/work/app/config.php';
 require_once '/work/app/core.php';
 
+=======
+<!--
+生徒詳細画面
+
+1. PHP処理
+   1.1 共通関数読み込み
+   1.2 ログイン確認
+   1.3 ログアウト処理
+   1.4 生徒情報取得
+   1.5 成績データ取得（全テストを表示、未受験は0点）
+2. HTML構造
+   2.1 ヘッダー
+   2.2 生徒情報編集フォーム
+   2.3 写真アップロード
+   2.4 基本情報入力
+   2.5 成績一覧テーブル
+   2.6 成績行テンプレート
+   2.7 成績保存・削除用フォーム
+   2.8 フッター
+3. スクリプト読み込み
+-->
+<?php
+// 1. PHP処理 - ログイン確認と生徒データの準備
+// 1.1 共通関数読み込み - データベース接続とか使う
+require_once '/work/app/config.php';
+require_once '/work/app/core.php';
+
+// 1.2 ログイン確認 - ログインしてないといけない
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 if (!Utils::isLoggedIn()) {
     header('Location: /login.php');
     exit;
 }
 
+<<<<<<< HEAD
 checkLogoutRequest();
 
 // 入力取得と初期値
+=======
+
+
+// 1.3 ログアウト処理 - ログアウトボタンが押されたら処理
+checkLogoutRequest();
+
+
+
+
+// 1.4 生徒情報をDBから取得
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 $student_id = $_GET['id'] ?? '';
 $class = '';
 $class_no = '';
@@ -37,9 +79,13 @@ $birth_year = '';
 $birth_month = '';
 $birth_day = '';
 $gender_text = '';
+<<<<<<< HEAD
 $photo_path = '../img/ダミー生徒画像.png';
 
 // 生徒情報取得
+=======
+
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 if ($student_id) {
     try {
         $pdo = getDatabaseConnection();
@@ -66,6 +112,7 @@ if ($student_id) {
             }
         }
     } catch (Exception $e) {
+<<<<<<< HEAD
 
     }
 }
@@ -79,17 +126,34 @@ if ($student_id) {
 }
 
 // 成績取得と集計
+=======
+        // エラー時は空のまま
+    }
+}
+
+// 1.5 既存の成績データを取得
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 $existing_scores = [];
 if ($student_id) {
     try {
         $pdo = getDatabaseConnection();
 
+<<<<<<< HEAD
         // 未受験も含めて行を出すためLEFT JOIN、点数は0扱いで新しい順
         $sql = "SELECT 
                     t.id AS test_id,
                     t.test_date,
                     t.test_cd,
                     COUNT(sc.id) as score_count,
+=======
+        $sql = "SELECT 
+                    t.id AS test_id,
+                    t.test_date,
+                    CASE 
+                        WHEN t.test_cd = 1 THEN '期末試験'
+                        WHEN t.test_cd = 2 THEN '中間試験'
+                    END as test_type,
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
                     COALESCE(MAX(CASE WHEN s.id = 3 AND sc.student_id = ? THEN sc.score END), 0) as japanese,
                     COALESCE(MAX(CASE WHEN s.id = 2 AND sc.student_id = ? THEN sc.score END), 0) as math,
                     COALESCE(MAX(CASE WHEN s.id = 1 AND sc.student_id = ? THEN sc.score END), 0) as english,
@@ -98,12 +162,17 @@ if ($student_id) {
                 FROM tests t
                 LEFT JOIN scores sc ON t.id = sc.test_id AND sc.student_id = ?
                 LEFT JOIN subjects s ON sc.subject_id = s.id
+<<<<<<< HEAD
+=======
+                WHERE t.test_cd IN (1, 2)
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
                 GROUP BY t.id, t.test_date, t.test_cd
                 ORDER BY t.test_date DESC";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$student_id, $student_id, $student_id, $student_id, $student_id, $student_id]);
         $existing_scores = $stmt->fetchAll(PDO::FETCH_ASSOC);
+<<<<<<< HEAD
         foreach ($existing_scores as &$score) {
             $scores = array_filter(
                 [
@@ -133,11 +202,14 @@ if ($student_id) {
             }
         }
         unset($score);
+=======
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 
     } catch (Exception $e) {
         $existing_scores = [];
     }
 }
+<<<<<<< HEAD
 
 // 戻りURL作成
 $return_params = [];
@@ -151,6 +223,11 @@ $return_url = buildUrl('/php/student_list.php', $return_params);
 ?>
 
 <!-- HTML出力 -->
+=======
+?>
+
+<!-- 2. HTML構造 - 生徒詳細画面の表示 -->
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -159,10 +236,17 @@ $return_url = buildUrl('/php/student_list.php', $return_params);
   <link rel="stylesheet" href="../css/student_detail.css">
 </head>
 <body>
+<<<<<<< HEAD
   
   
   
   <!-- ヘッダー -->
+=======
+
+
+
+  <!-- 2.1 ヘッダー - ロゴとタイトル -->
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
   <header>
     <?php echo generateHeader(); ?>
   </header>
@@ -170,15 +254,20 @@ $return_url = buildUrl('/php/student_list.php', $return_params);
 
   <main>
     <section id="register-section">
+<<<<<<< HEAD
       
       
       
       <!-- 生徒情報フォーム -->
+=======
+      <!-- 2.2 生徒情報編集フォーム - 生徒の情報を更新する -->
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
       <form id="student-register-form" method="POST" action="student.sousa.php" enctype="multipart/form-data">
         <fieldset class="register-area">
           <legend class="hidden">新規生徒登録フォーム</legend>
           <input type="hidden" name="action" value="update_student">
           <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
+<<<<<<< HEAD
           
           
           
@@ -193,6 +282,16 @@ $return_url = buildUrl('/php/student_list.php', $return_params);
           
           
           <!-- 基本情報入力 -->
+=======
+          <!-- 2.3 写真アップロード - 生徒の写真を設定 -->
+          <section class="photo-upload">
+            <img id="student-photo" src="../img/ダミー生徒画像.png" alt="写真" class="photo-preview">
+            <input type="file" id="photo-input" accept="image/jpeg,image/jpg" class="hidden">
+            <button type="button" id="photo-btn">写真を挿入</button>
+            <div id="photo-error" class="photo-error hidden"></div>
+          </section>
+          <!-- 2.4 基本情報入力 - 名前やクラスなどの情報を入力 -->
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
           <section class="info-input">
             <div class="row">
               <label for="last-name">氏名(姓)</label>
@@ -206,6 +305,11 @@ $return_url = buildUrl('/php/student_list.php', $return_params);
               <label for="first-name-kana">氏名(めい)</label>
               <input type="text" id="first-name-kana" name="first_name_kana" value="<?php echo htmlspecialchars($first_name_kana); ?>" placeholder="氏名(めい)" required pattern="[ぁ-ん]+">
             </div>
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
             <div class="row">
                 <label for="class-select">クラス</label>
                 <select id="class-select" name="class" required>
@@ -238,7 +342,11 @@ $return_url = buildUrl('/php/student_list.php', $return_params);
                 <span>日</span>
             <button type="submit" id="register-btn">更新</button>
             </div>
+<<<<<<< HEAD
              
+=======
+             <!-- バリデーションエラーメッセージ -->
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
         <div id="validation-error" class="validation-error hidden">
           未入力の項目があります
         </div>
@@ -246,6 +354,7 @@ $return_url = buildUrl('/php/student_list.php', $return_params);
         </fieldset>
       </form>
       
+<<<<<<< HEAD
       
     </section>
 
@@ -253,6 +362,33 @@ $return_url = buildUrl('/php/student_list.php', $return_params);
     
     
     <!-- 成績一覧 -->
+=======
+      <!-- 2.6 成績行テンプレート - 新しい成績行を追加するためのテンプレート -->
+      <template id="score-row-template">
+        <tr>
+          <td><input type="date" class="score-date" style="width:120px;"></td>
+          <td>
+            <select class="score-type">
+              <option value="未受験">未受験</option>
+              <option value="期末試験">期末試験</option>
+              <option value="中間試験">中間試験</option>
+            </select>
+          </td>
+          <td><input type="number" class="score-input" min="0" max="100" style="width:60px;" placeholder="0"></td>
+          <td><input type="number" class="score-input" min="0" max="100" style="width:60px;" placeholder="0"></td>
+          <td><input type="number" class="score-input" min="0" max="100" style="width:60px;" placeholder="0"></td>
+          <td><input type="number" class="score-input" min="0" max="100" style="width:60px;" placeholder="0"></td>
+          <td><input type="number" class="score-input" min="0" max="100" style="width:60px;" placeholder="0"></td>
+          <td><input type="text" class="score-avg" readonly style="width:60px;"></td>
+          <td><input type="text" class="score-sum" readonly style="width:60px;"></td>
+          <td><button type="button" class="score-save action">保存</button></td>
+          <td><button type="button" class="score-delete action">削除</button></td>
+        </tr>
+      </template>
+    </section>
+
+    <!-- 2.5 成績一覧テーブル - 過去のテスト結果を表示 -->
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
     <section class="score-area">
         <h2>成績一覧</h2>
         <table id="score-table">
@@ -272,17 +408,26 @@ $return_url = buildUrl('/php/student_list.php', $return_params);
             </tr>
           </thead>
           <tbody id="score-table-body">
+<<<<<<< HEAD
             
+=======
+            <!-- 既存の成績データを表示 -->
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
             <?php foreach ($existing_scores as $score): ?>
             <tr data-existing="true" data-test-id="<?php echo htmlspecialchars($score['test_id']); ?>">
               <td><input type="date" class="score-date" value="<?php echo htmlspecialchars($score['test_date']); ?>" style="width:120px;" disabled></td>
               <td>
+<<<<<<< HEAD
                 <select class="score-type">
+=======
+                <select class="score-type" disabled>
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
                   <option value="未受験" <?php echo $score['test_type'] === '未受験' ? 'selected' : ''; ?>>未受験</option>
                   <option value="期末試験" <?php echo $score['test_type'] === '期末試験' ? 'selected' : ''; ?>>期末試験</option>
                   <option value="中間試験" <?php echo $score['test_type'] === '中間試験' ? 'selected' : ''; ?>>中間試験</option>
                 </select>
               </td>
+<<<<<<< HEAD
               <td><input type="number" class="score-input" name="score_inputs[japanese]" form="score-save-form-<?php echo htmlspecialchars($score['test_id']); ?>" value="<?php echo htmlspecialchars($score['japanese'] ?? '0'); ?>" min="0" max="100" style="width:60px;"></td>
               <td><input type="number" class="score-input" name="score_inputs[math]" form="score-save-form-<?php echo htmlspecialchars($score['test_id']); ?>" value="<?php echo htmlspecialchars($score['math'] ?? '0'); ?>" min="0" max="100" style="width:60px;"></td>
               <td><input type="number" class="score-input" name="score_inputs[english]" form="score-save-form-<?php echo htmlspecialchars($score['test_id']); ?>" value="<?php echo htmlspecialchars($score['english'] ?? '0'); ?>" min="0" max="100" style="width:60px;"></td>
@@ -311,10 +456,31 @@ $return_url = buildUrl('/php/student_list.php', $return_params);
             </tr>
             <?php endforeach; ?>
             
+=======
+              <td><input type="number" class="score-input" value="<?php echo htmlspecialchars($score['japanese'] ?? '0'); ?>" min="0" max="100" style="width:60px;"></td>
+              <td><input type="number" class="score-input" value="<?php echo htmlspecialchars($score['math'] ?? '0'); ?>" min="0" max="100" style="width:60px;"></td>
+              <td><input type="number" class="score-input" value="<?php echo htmlspecialchars($score['english'] ?? '0'); ?>" min="0" max="100" style="width:60px;"></td>
+              <td><input type="number" class="score-input" value="<?php echo htmlspecialchars($score['science'] ?? '0'); ?>" min="0" max="100" style="width:60px;"></td>
+              <td><input type="number" class="score-input" value="<?php echo htmlspecialchars($score['social'] ?? '0'); ?>" min="0" max="100" style="width:60px;"></td>
+              <td><input type="text" class="score-avg" readonly style="width:60px;" value="<?php 
+                $scores = array_filter([$score['japanese'] ?? 0, $score['math'] ?? 0, $score['english'] ?? 0, $score['science'] ?? 0, $score['social'] ?? 0], function($v) { return $v !== null && $v !== ''; });
+                echo count($scores) > 0 ? number_format(array_sum($scores) / count($scores), 1) : '0.0';
+              ?>"></td>
+              <td><input type="text" class="score-sum" readonly style="width:60px;" value="<?php 
+                $scores = array_filter([$score['japanese'] ?? 0, $score['math'] ?? 0, $score['english'] ?? 0, $score['science'] ?? 0, $score['social'] ?? 0], function($v) { return $v !== null && $v !== ''; });
+                echo array_sum($scores);
+              ?>"></td>
+              <td><button type="button" class="score-save action">保存</button></td>
+              <td><button type="button" class="score-delete action">削除</button></td>
+            </tr>
+            <?php endforeach; ?>
+            <!-- JSで行追加 -->
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
           </tbody>
         </table>
       </section>
       <div class="back-list-wrapper">
+<<<<<<< HEAD
         <a href="<?php echo htmlspecialchars($return_url); ?>" class="back-list">←生徒一覧に戻る</a>
       </div>
 
@@ -325,12 +491,36 @@ $return_url = buildUrl('/php/student_list.php', $return_params);
   
   
   <!-- フッター -->
+=======
+        <a href="/php/student_list.php" class="back-list">←生徒一覧に戻る</a>
+      </div>
+
+      <!-- 2.7 成績の保存と削除用 -->
+      <form id="score-form" method="POST" action="student.sousa.php" style="display: none;">
+        <input type="hidden" name="action" value="save_score">
+        <input type="hidden" name="student_id" id="score-student-id">
+        <input type="hidden" name="test_date" id="score-test-date">
+        <input type="hidden" name="test_type" id="score-test-type">
+        <input type="hidden" name="scores" id="score-scores">
+      </form>
+
+      <form id="score-delete-form" method="POST" action="student.sousa.php" style="display: none;">
+        <input type="hidden" name="action" value="delete_score">
+        <input type="hidden" name="student_id" id="score-delete-student-id">
+        <input type="hidden" name="test_id" id="score-delete-test-id">
+      </form>
+    </section>
+  </main>
+
+  <!-- 2.8 フッター - コピーライト -->
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
   <footer>
     <?php echo generateFooter(); ?>
   </footer>
 
   <?php echo generateLogoutForm(); ?>
 
+<<<<<<< HEAD
   
   
   
@@ -340,3 +530,13 @@ $return_url = buildUrl('/php/student_list.php', $return_params);
 </html>
 
 
+=======
+  <!-- 3. スクリプト読み込み - フォーム操作と成績管理 -->
+  <script>
+    // 既存の成績データをJavaScriptで使用できるようにする
+    window.existingScores = <?php echo json_encode($existing_scores); ?>;
+  </script>
+  <script src="../js/student_detail.js"></script>
+</body>
+</html>
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a

@@ -9,8 +9,15 @@ Userクラス
    3.1 _validateメソッド（private）
 4. ログイン処理
    4.1 loginメソッド
+<<<<<<< HEAD
 5. ユーザー情報取得
    5.1 meメソッド
+=======
+5. 新規登録処理
+   5.1 addメソッド
+6. ユーザー情報取得
+   6.1 meメソッド
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 */
 
 class User extends Utils
@@ -39,6 +46,11 @@ class User extends Utils
         $action = filter_input(INPUT_POST, 'action');
         if ($action === 'login') {
             $this->login();
+<<<<<<< HEAD
+=======
+        } elseif ($action === 'signup') {
+            $this->add();
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
         }
     }
 
@@ -115,6 +127,44 @@ class User extends Utils
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * 新規登録処理
+     */
+    public function add()
+    {
+        if (!$this->_validate()) {
+            return false;
+        }
+
+        $email = trim(filter_input(INPUT_POST, 'email'));
+        $password = filter_input(INPUT_POST, 'password');
+
+        try {
+            $stmt = $this->pdo->prepare("INSERT INTO users (email, password_hash) VALUES (:email, :password_hash)");
+            $stmt->bindValue('email', $email, PDO::PARAM_STR);
+            $stmt->bindValue('password_hash', password_hash($password, PASSWORD_DEFAULT), PDO::PARAM_STR);
+            $stmt->execute();
+
+            // 登録成功後、ログイン処理
+            $stmt = $this->pdo->prepare("SELECT id, email FROM users WHERE email = ?");
+            $stmt->execute([$email]);
+            $user = $stmt->fetch();
+
+            if ($user) {
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['email'] = $user['email'];
+                header("Location: /php/student_list.php");
+                exit;
+            }
+        } catch (PDOException $e) {
+            $this->setErrors('email', 'このメールアドレスは既に登録されています');
+            return false;
+        }
+    }
+
+    /**
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
      * ログインユーザー情報取得
      */
     public function me()
@@ -132,4 +182,7 @@ class User extends Utils
         }
     }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
 完了画面の機能
 
@@ -18,6 +19,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // 2.2 確認ダイアログ表示
     if (confirm('ログアウトしますか？')) {
       // 2.3 ログアウトフォーム送信
+=======
+/*1. ログアウト機能*/
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById('logout-logo').addEventListener('click', function() {
+    if (confirm('ログアウトしますか？')) {
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
       document.getElementById('logout-form').submit();
     }
   });

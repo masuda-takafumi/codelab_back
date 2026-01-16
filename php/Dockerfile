@@ -26,4 +26,8 @@ COPY php.ini-development /usr/local/etc/php/php.ini
 WORKDIR /work
 
 # Start the PHP built-in server
+<<<<<<< HEAD
 CMD ["php", "-S", "0.0.0.0:8000", "-t", "/work/public"]
+=======
+CMD ["php", "-S", "0.0.0.0:8000", "-t", "/var/www/html"]
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a

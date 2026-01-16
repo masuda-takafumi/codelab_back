@@ -193,7 +193,10 @@ fieldset.register-area {
   border: 1px solid #bbb;
   border-radius: 5px;
   background: #fff;
+<<<<<<< HEAD
   text-align: left;
+=======
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 }
 
 #class-select, #gender-select {

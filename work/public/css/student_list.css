@@ -15,7 +15,11 @@
 /* 2. レイアウト */
 main {
   max-width: 1000px;
+<<<<<<< HEAD
   margin: 0 auto 20px;
+=======
+  margin: 20px auto;
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
   padding: 0 1rem;
 }
 
@@ -45,12 +49,16 @@ main {
   display: flex;
   padding-top: 30px;
   padding-bottom: 30px;
+<<<<<<< HEAD
   margin-bottom: 0;
+=======
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
   gap: 1rem;
   justify-content: center;
   background-color: #f0f0f0;
 }
 
+<<<<<<< HEAD
 .search-input-wrapper {
   position: relative;
   width: 300px;
@@ -97,6 +105,15 @@ main {
 }
 
 .search-btn {
+=======
+.search-box input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 300px;
+}
+
+.search-box button {
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
   background-color: orange;
   border: none;
   color: white;
@@ -109,14 +126,22 @@ main {
 
 
 /* 3. テーブル */
+<<<<<<< HEAD
 /*ent-list-table {
+=======
+table {
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
   width: 100%;
   border-collapse: collapse;
   background-color: white;
 }
 
+<<<<<<< HEAD
 .student-list-table th,
 .student-list-table td {
+=======
+th, td {
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
   padding: 0.75rem;
   border-bottom: 1px solid #ccc;
   text-align: center;
@@ -127,6 +152,7 @@ button.action {
   border-radius: 1.5rem;
   cursor: pointer;
   font-weight: bold;
+<<<<<<< HEAD
   text-decoration: none;
   color: inherit;
   display: inline-block;
@@ -167,6 +193,12 @@ button.action {
   font-size: 1em;
   line-height: 1.2;
   text-align: center;
+=======
+}
+
+button.action:hover {
+  background-color: darkorange;
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 }
 
 .pagination {

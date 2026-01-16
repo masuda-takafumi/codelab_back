@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 ---
 
 version: '3.8'
+=======
+name: score-manager
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 services:
   db:
     build: ./mysql
@@ -11,7 +15,11 @@ services:
       MYSQL_USER: smuser
       MYSQL_PASSWORD: smpass
     volumes:
+<<<<<<< HEAD
     - db-data:/var/lib/mysql
+=======
+    - scoremanager_db-data:/var/lib/mysql
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
   php:
     build: ./php
     depends_on:
@@ -19,6 +27,10 @@ services:
     ports:
     - 80:8000
     volumes:
+<<<<<<< HEAD
+=======
+    - ./work/public:/var/www/html
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
     - ./work:/work
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
@@ -29,4 +41,9 @@ services:
     ports:
       - 8080:80
 volumes:
+<<<<<<< HEAD
   db-data:
+=======
+  scoremanager_db-data:
+    external: true
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a

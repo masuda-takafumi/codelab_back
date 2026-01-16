@@ -29,6 +29,11 @@ checkLogoutRequest();
 3. スクリプト読み込み
 -->
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
 <!-- 2. HTML構造 - 完了画面の表示 -->
 <!DOCTYPE html>
 <html lang="ja">
@@ -66,6 +71,12 @@ checkLogoutRequest();
   <!-- ログアウトフォーム -->
   <?php echo generateLogoutForm(); ?>
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 5a6520016f86592e24c27614155e8eb66e15913a
   <!-- 3. スクリプト読み込み - ログアウト機能 -->
   <!-- JavaScript読み込み - ログアウトボタンを動かす -->
   <script src="../js/complete.js"></script>
